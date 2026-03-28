@@ -1,1 +1,0 @@
-# Recyclerie-Solidaire
