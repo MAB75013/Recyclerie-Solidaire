@@ -749,19 +749,21 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
     <div class="modal-body">
       <p class="modal-subtitle">Devis gratuit & sans engagement — réponse garantie sous 24h.</p>
       <div id="devis-form">
+        <input type="hidden" name="_subject" value="[Recyclerie Solidaire] Demande de devis débarras"/>
+        <input type="hidden" name="formulaire" value="Demande de devis"/>
         <div class="form-row">
-          <div class="form-group"><label class="form-label">Prénom</label><input class="form-input" type="text" placeholder="Marie"/></div>
-          <div class="form-group"><label class="form-label">Nom</label><input class="form-input" type="text" placeholder="Dupont"/></div>
+          <div class="form-group"><label class="form-label">Prénom</label><input class="form-input" type="text" name="prenom" placeholder="Marie" required/></div>
+          <div class="form-group"><label class="form-label">Nom</label><input class="form-input" type="text" name="nom" placeholder="Dupont" required/></div>
         </div>
-        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="marie@exemple.fr"/></div>
-        <div class="form-group"><label class="form-label">Téléphone</label><input class="form-input" type="tel" placeholder="06 00 00 00 00"/></div>
-        <div class="form-group"><label class="form-label">Adresse du débarras</label><input class="form-input" type="text" placeholder="Rue, ville, code postal"/></div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" name="email" placeholder="marie@exemple.fr" required/></div>
+        <div class="form-group"><label class="form-label">Téléphone</label><input class="form-input" type="tel" name="telephone" placeholder="06 00 00 00 00"/></div>
+        <div class="form-group"><label class="form-label">Adresse du débarras</label><input class="form-input" type="text" name="adresse" placeholder="Rue, ville, code postal"/></div>
         <div class="form-group"><label class="form-label">Type</label>
-          <select class="form-select"><option>Appartement</option><option>Maison</option><option>Cave / Grenier</option><option>Bureau / Local</option><option>Autre</option></select>
+          <select class="form-select" name="type_debarras"><option>Appartement</option><option>Maison</option><option>Cave / Grenier</option><option>Bureau / Local</option><option>Autre</option></select>
         </div>
-        <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" placeholder="Décrivez les objets, meubles, appareils à débarrasser..."></textarea></div>
-        <div class="recaptcha-wrap" id="rc-devis"><div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div></div>
-        <button class="form-submit" onclick="submitForm('modal-devis','devis-form','devis-success','rc-devis','Envoyer ma demande →')">Envoyer ma demande →</button>
+        <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" name="description" placeholder="Décrivez les objets, meubles, appareils à débarrasser..."></textarea></div>
+        <div class="recaptcha-wrap" id="rc-devis"><div class="g-recaptcha" data-sitekey="VOTRE_CLE_RECAPTCHA_V2"></div></div>
+        <button class="form-submit" onclick="submitForm('modal-devis','devis-form','devis-success','rc-devis',this)">Envoyer ma demande →</button>
         <p class="form-note">Données traitées conformément à notre politique RGPD.</p>
       </div>
       <div class="form-success" id="devis-success">
@@ -783,19 +785,21 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
     <div class="modal-body">
       <p class="modal-subtitle">Service de collecte à domicile entièrement gratuit. Don définitif sans restitution.</p>
       <div id="don-form">
+        <input type="hidden" name="_subject" value="[Recyclerie Solidaire] Planification d'un don"/>
+        <input type="hidden" name="formulaire" value="Donation d'objets"/>
         <div class="form-row">
-          <div class="form-group"><label class="form-label">Prénom</label><input class="form-input" type="text" placeholder="Jean"/></div>
-          <div class="form-group"><label class="form-label">Nom</label><input class="form-input" type="text" placeholder="Martin"/></div>
+          <div class="form-group"><label class="form-label">Prénom</label><input class="form-input" type="text" name="prenom" placeholder="Jean" required/></div>
+          <div class="form-group"><label class="form-label">Nom</label><input class="form-input" type="text" name="nom" placeholder="Martin" required/></div>
         </div>
-        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="jean@exemple.fr"/></div>
-        <div class="form-group"><label class="form-label">Téléphone</label><input class="form-input" type="tel" placeholder="06 00 00 00 00"/></div>
-        <div class="form-group"><label class="form-label">Adresse de collecte</label><input class="form-input" type="text" placeholder="Rue, ville, code postal"/></div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" name="email" placeholder="jean@exemple.fr" required/></div>
+        <div class="form-group"><label class="form-label">Téléphone</label><input class="form-input" type="tel" name="telephone" placeholder="06 00 00 00 00"/></div>
+        <div class="form-group"><label class="form-label">Adresse de collecte</label><input class="form-input" type="text" name="adresse" placeholder="Rue, ville, code postal"/></div>
         <div class="form-group"><label class="form-label">Type d'objets</label>
-          <select class="form-select"><option>Meubles</option><option>Électroménager</option><option>Vêtements</option><option>Livres & Médias</option><option>Jouets & Jeux</option><option>Divers / Mixte</option></select>
+          <select class="form-select" name="type_objets"><option>Meubles</option><option>Électroménager</option><option>Vêtements</option><option>Livres & Médias</option><option>Jouets & Jeux</option><option>Divers / Mixte</option></select>
         </div>
-        <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" placeholder="Décrivez les objets à donner (état, quantité estimée...)"></textarea></div>
-        <div class="recaptcha-wrap" id="rc-don"><div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div></div>
-        <button class="form-submit" onclick="submitForm('modal-don','don-form','don-success','rc-don','Planifier mon don →')">Planifier mon don →</button>
+        <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" name="description" placeholder="Décrivez les objets à donner (état, quantité estimée...)"></textarea></div>
+        <div class="recaptcha-wrap" id="rc-don"><div class="g-recaptcha" data-sitekey="VOTRE_CLE_RECAPTCHA_V2"></div></div>
+        <button class="form-submit" onclick="submitForm('modal-don','don-form','don-success','rc-don',this)">Planifier mon don →</button>
         <p class="form-note">Don définitif — voir nos conditions de don.</p>
       </div>
       <div class="form-success" id="don-success">
@@ -817,17 +821,19 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
     <div class="modal-body">
       <p class="modal-subtitle">Question, partenariat, bénévolat — nous répondons sous 48h.</p>
       <div id="contact-form">
+        <input type="hidden" name="_subject" value="[Recyclerie Solidaire] Nouveau message de contact"/>
+        <input type="hidden" name="formulaire" value="Contact général"/>
         <div class="form-row">
-          <div class="form-group"><label class="form-label">Prénom</label><input class="form-input" type="text" placeholder="Sophie"/></div>
-          <div class="form-group"><label class="form-label">Nom</label><input class="form-input" type="text" placeholder="Bernard"/></div>
+          <div class="form-group"><label class="form-label">Prénom</label><input class="form-input" type="text" name="prenom" placeholder="Sophie" required/></div>
+          <div class="form-group"><label class="form-label">Nom</label><input class="form-input" type="text" name="nom" placeholder="Bernard" required/></div>
         </div>
-        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="sophie@exemple.fr"/></div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" name="email" placeholder="sophie@exemple.fr" required/></div>
         <div class="form-group"><label class="form-label">Sujet</label>
-          <select class="form-select"><option>Information générale</option><option>Don d'objets</option><option>Demande de débarras</option><option>Partenariat</option><option>Bénévolat</option><option>Autre</option></select>
+          <select class="form-select" name="sujet"><option>Information générale</option><option>Don d'objets</option><option>Demande de débarras</option><option>Partenariat</option><option>Bénévolat</option><option>Autre</option></select>
         </div>
-        <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" style="min-height:120px" placeholder="Décrivez votre demande..."></textarea></div>
-        <div class="recaptcha-wrap" id="rc-contact"><div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div></div>
-        <button class="form-submit" onclick="submitForm('modal-contact','contact-form','contact-success','rc-contact','Envoyer →')">Envoyer →</button>
+        <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" name="message" style="min-height:120px" placeholder="Décrivez votre demande..."></textarea></div>
+        <div class="recaptcha-wrap" id="rc-contact"><div class="g-recaptcha" data-sitekey="VOTRE_CLE_RECAPTCHA_V2"></div></div>
+        <button class="form-submit" onclick="submitForm('modal-contact','contact-form','contact-success','rc-contact',this)">Envoyer →</button>
         <p class="form-note">Données traitées conformément à notre politique RGPD.</p>
       </div>
       <div class="form-success" id="contact-success">
@@ -881,23 +887,97 @@ function handleBackdropClick(e, id) {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.querySelectorAll('.modal-backdrop.open').forEach(bd => closeModal(bd.id)); } });
 
-/* ── FORM SUBMIT ── */
-function submitForm(modalId, formId, successId, rcId, originalText) {
-  const rc = document.getElementById(rcId);
-  const token = typeof grecaptcha !== 'undefined' ? grecaptcha.getResponse(rc.querySelector('.g-recaptcha').__grId) : grecaptcha?.getResponse();
-  // simplified check
-  const rcResponse = typeof grecaptcha !== 'undefined' ? grecaptcha.getResponse() : '';
-  if (!rcResponse) {
-    rc.classList.add('error');
-    rc.style.outline = '2px solid #e05252';
-    rc.style.borderRadius = '6px';
-    setTimeout(() => { rc.style.outline = ''; rc.classList.remove('error'); }, 2500);
+/* ── FORMSPREE ENDPOINT ── */
+const FORMSPREE_URL = 'https://formspree.io/f/xeepajlv';
+
+/* ── FORM SUBMIT → FORMSPREE + RECAPTCHA ── */
+async function submitForm(modalId, formId, successId, rcId, btn) {
+  const formEl  = document.getElementById(formId);
+  const rcWrap  = document.getElementById(rcId);
+  const successEl = document.getElementById(successId);
+
+  // 1. Vérification reCAPTCHA
+  const rcToken = (typeof grecaptcha !== 'undefined') ? grecaptcha.getResponse() : '';
+  if (!rcToken) {
+    rcWrap.style.outline = '2px solid #e05252';
+    rcWrap.style.borderRadius = '6px';
+    rcWrap.style.transition = 'outline .2s';
+    setTimeout(() => { rcWrap.style.outline = ''; }, 2800);
     return;
   }
-  document.getElementById(formId).style.display = 'none';
-  const s = document.getElementById(successId);
-  s.style.display = 'flex';
-  setTimeout(() => { closeModal(modalId); if (typeof grecaptcha !== 'undefined') grecaptcha.reset(); }, 3000);
+
+  // 2. État chargement sur le bouton
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours…';
+  btn.style.opacity = '0.75';
+
+  // 3. Collecte des données du formulaire
+  const data = {};
+  formEl.querySelectorAll('[name]').forEach(el => {
+    if (el.name && el.name !== '') data[el.name] = el.value;
+  });
+  data['g-recaptcha-response'] = rcToken;
+
+  // 4. Envoi vers Formspree
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method:  'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body:    JSON.stringify(data)
+    });
+
+    if (res.ok) {
+      // ✅ Succès
+      formEl.style.display = 'none';
+      successEl.style.display = 'flex';
+      if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+      // Fermeture auto après 3.5s
+      setTimeout(() => {
+        closeModal(modalId);
+        // Reset formulaire pour une prochaine ouverture
+        setTimeout(() => {
+          formEl.style.display = '';
+          successEl.style.display = 'none';
+          formEl.querySelectorAll('input:not([type=hidden]), textarea').forEach(el => el.value = '');
+          formEl.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+          btn.disabled = false;
+          btn.textContent = originalText;
+          btn.style.opacity = '';
+        }, 600);
+      }, 3500);
+    } else {
+      // ❌ Erreur Formspree
+      const json = await res.json().catch(() => ({}));
+      const msg = (json.errors && json.errors[0]?.message) || 'Une erreur est survenue. Veuillez réessayer.';
+      btn.disabled = false;
+      btn.textContent = originalText;
+      btn.style.opacity = '';
+      showFormError(formId, msg);
+      if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+    }
+  } catch (err) {
+    // ❌ Erreur réseau
+    btn.disabled = false;
+    btn.textContent = originalText;
+    btn.style.opacity = '';
+    showFormError(formId, 'Impossible d\'envoyer le formulaire. Vérifiez votre connexion.');
+    if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+  }
+}
+
+function showFormError(formId, message) {
+  const formEl = document.getElementById(formId);
+  let errEl = formEl.querySelector('.form-error-msg');
+  if (!errEl) {
+    errEl = document.createElement('p');
+    errEl.className = 'form-error-msg';
+    errEl.style.cssText = 'color:#c0392b;font-size:13px;margin-top:10px;text-align:center;padding:10px;background:#fdf2f2;border-radius:8px;';
+    formEl.appendChild(errEl);
+  }
+  errEl.textContent = message;
+  errEl.style.display = 'block';
+  setTimeout(() => { errEl.style.display = 'none'; }, 5000);
 }
 
 /* \u2500\u2500 REVEAL ON SCROLL \u2500\u2500 */
