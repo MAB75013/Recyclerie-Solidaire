@@ -7,7 +7,7 @@
 <title>Recyclerie Solidaire | Donnez & Recyclez en Île-de-France</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
 <style>
 /* ── RESET & VARS ── */
 :root{
@@ -762,7 +762,7 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
           <select class="form-select" name="type_debarras"><option>Appartement</option><option>Maison</option><option>Cave / Grenier</option><option>Bureau / Local</option><option>Autre</option></select>
         </div>
         <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" name="description" placeholder="Décrivez les objets, meubles, appareils à débarrasser..."></textarea></div>
-        <div class="recaptcha-wrap" id="rc-devis"><div class="g-recaptcha" data-sitekey="6LcMPJwsAAAAAGHiufRp-oN1KEV58YjUSkoQtiDV"></div></div>
+        <div class="recaptcha-wrap" id="rc-devis"></div>
         <button class="form-submit" onclick="submitForm('modal-devis','devis-form','devis-success','rc-devis',this)">Envoyer ma demande →</button>
         <p class="form-note">Données traitées conformément à notre politique RGPD.</p>
       </div>
@@ -798,7 +798,7 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
           <select class="form-select" name="type_objets"><option>Meubles</option><option>Électroménager</option><option>Vêtements</option><option>Livres & Médias</option><option>Jouets & Jeux</option><option>Divers / Mixte</option></select>
         </div>
         <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" name="description" placeholder="Décrivez les objets à donner (état, quantité estimée...)"></textarea></div>
-        <div class="recaptcha-wrap" id="rc-don"><div class="g-recaptcha" data-sitekey="6LcMPJwsAAAAAGHiufRp-oN1KEV58YjUSkoQtiDV"></div></div>
+        <div class="recaptcha-wrap" id="rc-don"></div>
         <button class="form-submit" onclick="submitForm('modal-don','don-form','don-success','rc-don',this)">Planifier mon don →</button>
         <p class="form-note">Don définitif — voir nos conditions de don.</p>
       </div>
@@ -832,7 +832,7 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
           <select class="form-select" name="sujet"><option>Information générale</option><option>Don d'objets</option><option>Demande de débarras</option><option>Partenariat</option><option>Bénévolat</option><option>Autre</option></select>
         </div>
         <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" name="message" style="min-height:120px" placeholder="Décrivez votre demande..."></textarea></div>
-        <div class="recaptcha-wrap" id="rc-contact"><div class="g-recaptcha" data-sitekey="6LcMPJwsAAAAAGHiufRp-oN1KEV58YjUSkoQtiDV"></div></div>
+        <div class="recaptcha-wrap" id="rc-contact"></div>
         <button class="form-submit" onclick="submitForm('modal-contact','contact-form','contact-success','rc-contact',this)">Envoyer →</button>
         <p class="form-note">Données traitées conformément à notre politique RGPD.</p>
       </div>
@@ -889,6 +889,18 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.q
 
 /* ── FORMSPREE ENDPOINT ── */
 const FORMSPREE_URL = 'https://formspree.io/f/xeepajlv';
+const RECAPTCHA_KEY = '6LcMPJwsAAAAAGHiufRp-oN1KEV58YjUSkoQtiDV';
+
+/* ── RECAPTCHA : rendu explicite, un widget par modal ── */
+const rcWidgets = {};
+function onRecaptchaLoad() {
+  ['rc-devis', 'rc-don', 'rc-contact'].forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      rcWidgets[id] = grecaptcha.render(el, { sitekey: RECAPTCHA_KEY, theme: 'light' });
+    }
+  });
+}
 
 /* ── FORM SUBMIT → FORMSPREE + RECAPTCHA ── */
 async function submitForm(modalId, formId, successId, rcId, btn) {
@@ -896,8 +908,10 @@ async function submitForm(modalId, formId, successId, rcId, btn) {
   const rcWrap  = document.getElementById(rcId);
   const successEl = document.getElementById(successId);
 
-  // 1. Vérification reCAPTCHA
-  const rcToken = (typeof grecaptcha !== 'undefined') ? grecaptcha.getResponse() : '';
+  // 1. Vérification reCAPTCHA — widget ID explicite pour éviter le conflit entre modals
+  const widgetId = rcWidgets[rcId];
+  const rcToken = (typeof grecaptcha !== 'undefined' && widgetId !== undefined)
+    ? grecaptcha.getResponse(widgetId) : '';
   if (!rcToken) {
     rcWrap.style.outline = '2px solid #e05252';
     rcWrap.style.borderRadius = '6px';
@@ -931,7 +945,7 @@ async function submitForm(modalId, formId, successId, rcId, btn) {
       // ✅ Succès
       formEl.style.display = 'none';
       successEl.style.display = 'flex';
-      if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+      if (typeof grecaptcha !== 'undefined' && rcWidgets[rcId] !== undefined) grecaptcha.reset(rcWidgets[rcId]);
       // Fermeture auto après 3.5s
       setTimeout(() => {
         closeModal(modalId);
@@ -954,7 +968,7 @@ async function submitForm(modalId, formId, successId, rcId, btn) {
       btn.textContent = originalText;
       btn.style.opacity = '';
       showFormError(formId, msg);
-      if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+      if (typeof grecaptcha !== 'undefined' && rcWidgets[rcId] !== undefined) grecaptcha.reset(rcWidgets[rcId]);
     }
   } catch (err) {
     // ❌ Erreur réseau
@@ -962,7 +976,7 @@ async function submitForm(modalId, formId, successId, rcId, btn) {
     btn.textContent = originalText;
     btn.style.opacity = '';
     showFormError(formId, 'Impossible d\'envoyer le formulaire. Vérifiez votre connexion.');
-    if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+    if (typeof grecaptcha !== 'undefined' && rcWidgets[rcId] !== undefined) grecaptcha.reset(rcWidgets[rcId]);
   }
 }
 
