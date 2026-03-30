@@ -193,18 +193,63 @@ nav.scrolled .nav-logo img{height:36px}
   background:var(--cream);overflow:hidden;
 }
 .don-content{display:flex;flex-direction:column;justify-content:center;padding:72px 64px 72px 72px}
-.accept-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0 36px}
-.accept-col h4{
-  font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
-  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+.deee-badge{
+  display:flex;align-items:center;gap:14px;
+  background:linear-gradient(135deg,var(--green-dark),var(--green-mid));
+  color:var(--white);border-radius:14px;padding:14px 18px;margin-bottom:22px;
 }
-.accept-col.yes h4{color:var(--green-dark)}
-.accept-col.no h4{color:#8a6a3a}
-.accept-list{list-style:none;display:flex;flex-direction:column;gap:8px}
-.accept-list li{font-size:13px;color:var(--text-body);font-weight:300;display:flex;align-items:center;gap:8px}
-.accept-list li::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.accept-col.yes li::before{background:var(--green-light)}
-.accept-col.no li::before{background:#c4956a}
+.deee-icon{font-size:24px;flex-shrink:0}
+.deee-badge strong{display:block;font-size:13px;font-weight:500;margin-bottom:2px}
+.deee-badge span{font-size:11px;opacity:.8;font-weight:300}
+.don-lists{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 18px}
+.don-col{background:var(--white);border-radius:16px;padding:18px 16px;box-shadow:var(--shadow)}
+.don-col-head{
+  font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+  padding-bottom:10px;border-bottom:1px solid var(--cream-dark);
+}
+.don-col.yes .don-col-head{color:var(--green-dark)}
+.don-col.no .don-col-head{color:#8a6a3a}
+.don-item{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(30,58,47,.05)}
+.don-item:last-child{border-bottom:none}
+.don-item-ico{font-size:16px;width:24px;text-align:center;flex-shrink:0}
+.don-item-txt{font-size:13px;color:var(--text-body);font-weight:300;line-height:1.4}
+.deee-pill{
+  display:inline-block;font-size:9px;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;background:rgba(74,140,101,.12);color:var(--green-light);
+  padding:2px 7px;border-radius:50px;margin-left:5px;vertical-align:middle;
+}
+.btn-liste{
+  display:inline-flex;align-items:center;gap:7px;
+  background:transparent;color:var(--green-light);
+  border:1.5px solid var(--green-pale);border-radius:50px;
+  padding:10px 20px;font-size:12px;font-weight:500;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:var(--transition);margin-bottom:20px;
+}
+.btn-liste:hover{background:var(--green-pale);color:var(--green-dark);border-color:var(--green-light)}
+.liste-modal-intro{
+  background:rgba(74,140,101,.07);border:1px solid var(--green-pale);
+  border-radius:12px;padding:13px 16px;margin-bottom:22px;
+  font-size:12px;color:var(--text-body);line-height:1.7;
+}
+.liste-modal-intro strong{color:var(--green-dark)}
+.liste-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.liste-col-title{
+  font-family:'Playfair Display',serif;font-size:16px;font-weight:600;
+  margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid;
+}
+.liste-col.yes .liste-col-title{color:var(--green-dark);border-color:var(--green-pale)}
+.liste-col.no .liste-col-title{color:#8a6a3a;border-color:#e8d5bb}
+.liste-cat{margin-bottom:16px}
+.liste-cat-head{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.liste-col.no .liste-cat-head{color:#8a6a3a}
+.liste-cat ul{list-style:none;padding-left:4px;display:flex;flex-direction:column;gap:4px}
+.liste-cat ul li{font-size:12px;color:var(--text-body);font-weight:300;line-height:1.5;padding-left:14px;position:relative}
+.liste-cat ul li::before{content:'·';position:absolute;left:2px;color:var(--text-light)}
+.liste-contact-box{margin-top:20px;padding:16px;background:rgba(74,140,101,.06);border-radius:12px;text-align:center}
+.liste-contact-box p{font-size:12px;color:var(--text-body);line-height:1.7;margin-bottom:12px}
+.liste-contact-box strong{color:var(--green-dark)}
 
 /* ── ABOUT ── */
 #about{padding:90px 72px;background:var(--green-dark);color:var(--white)}
@@ -412,7 +457,8 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
   .modal-header{padding:22px 20px 16px}
   .modal-body{padding:20px 20px 0}
   .form-row{grid-template-columns:1fr}
-  .accept-row{grid-template-columns:1fr}
+  .don-lists{grid-template-columns:1fr}
+  .liste-grid{grid-template-columns:1fr}
   .nav-links{display:none}
   .nav-burger{display:flex}
 }
@@ -535,31 +581,40 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
   <div class="don-content reveal">
     <div class="section-tag">Donation d'objets</div>
     <h2 class="section-title">Faites un don, agissez durablement</h2>
-    <p class="section-text">Notre équipe vient collecter vos objets à domicile. Service entièrement gratuit — vos objets sont triés, réparés et redistribués.</p>
-    <div class="accept-row">
-      <div class="accept-col yes">
-        <h4>✅ Acceptés</h4>
-        <ul class="accept-list">
-          <li>Meubles en bon état</li>
-          <li>Électroménager fonctionnel</li>
-          <li>Vêtements propres</li>
-          <li>Livres, CD, jeux</li>
-          <li>Jouets & déco</li>
-          <li>Fers & métaux</li>
-        </ul>
-      </div>
-      <div class="accept-col no">
-        <h4>❌ Refusés</h4>
-        <ul class="accept-list">
-          <li>Matelas & literie</li>
-          <li>Objets cassés irrécupérables</li>
-          <li>Produits chimiques</li>
-          <li>Médicaments</li>
-          <li>Grandes machines</li>
-          <li>Objets souillés</li>
-        </ul>
+    <p class="section-text">Collecte à domicile, entièrement gratuite. Tout est trié, réparé et redistribué — bon état ou en panne, nous prenons tout.</p>
+
+    <div class="deee-badge">
+      <span class="deee-icon">⚡</span>
+      <div>
+        <strong>Collecte DEEE agréée</strong>
+        <span>Appareils électriques & électroniques acceptés même en panne</span>
       </div>
     </div>
+
+    <div class="don-lists">
+      <div class="don-col yes">
+        <div class="don-col-head">✅ On accepte</div>
+        <div class="don-item"><span class="don-item-ico">💻</span><span class="don-item-txt">Électronique & informatique<span class="deee-pill">DEEE</span></span></div>
+        <div class="don-item"><span class="don-item-ico">🏠</span><span class="don-item-txt">Électroménager grand & petit<span class="deee-pill">DEEE</span></span></div>
+        <div class="don-item"><span class="don-item-ico">👗</span><span class="don-item-txt">Vêtements & chaussures</span></div>
+        <div class="don-item"><span class="don-item-ico">🪑</span><span class="don-item-txt">Meubles & déco</span></div>
+        <div class="don-item"><span class="don-item-ico">📚</span><span class="don-item-txt">Livres, CD, DVD, vinyles</span></div>
+        <div class="don-item"><span class="don-item-ico">🧸</span><span class="don-item-txt">Jouets & puériculture</span></div>
+        <div class="don-item"><span class="don-item-ico">🔧</span><span class="don-item-txt">Outillage & ferraille</span></div>
+        <div class="don-item"><span class="don-item-ico">🍳</span><span class="don-item-txt">Vaisselle & ustensiles</span></div>
+        <div class="don-item"><span class="don-item-ico">🎸</span><span class="don-item-txt">Instruments de musique</span></div>
+        <div class="don-item"><span class="don-item-ico">🎨</span><span class="don-item-txt">Matériel créatif & animalerie</span></div>
+      </div>
+      <div class="don-col no">
+        <div class="don-col-head">❌ On ne prend pas</div>
+        <div class="don-item"><span class="don-item-ico">🛏️</span><span class="don-item-txt">Matelas & literie</span></div>
+        <div class="don-item"><span class="don-item-ico">🧪</span><span class="don-item-txt">Produits chimiques</span></div>
+        <div class="don-item"><span class="don-item-ico">💊</span><span class="don-item-txt">Médicaments</span></div>
+        <div class="don-item"><span class="don-item-ico">🚫</span><span class="don-item-txt">Objets souillés ou dangereux</span></div>
+      </div>
+    </div>
+
+    <button class="btn-liste" onclick="openModal('modal-liste')">📋 Voir la liste détaillée →</button>
     <button class="btn-primary" onclick="openModal('modal-don')">Planifier un don →</button>
   </div>
   <div class="section-img reveal">
@@ -721,11 +776,11 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
     <div>
       <div class="footer-col-title">On accepte</div>
       <ul class="footer-links">
-        <li><a href="#don">Fers & métaux</a></li>
-        <li><a href="#don">Électronique</a></li>
+        <li><a href="#don">Électronique & DEEE</a></li>
         <li><a href="#don">Électroménager</a></li>
         <li><a href="#don">Vêtements & livres</a></li>
         <li><a href="#don">Jouets & meubles</a></li>
+        <li><a href="#don">Outillage & métaux</a></li>
       </ul>
     </div>
   </div>
@@ -738,6 +793,123 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
     </div>
   </div>
 </footer>
+
+<!-- ═══ MODAL : LISTE DÉTAILLÉE ═══ -->
+<div class="modal-backdrop" id="modal-liste" onclick="handleBackdropClick(event,'modal-liste')">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="liste-title">
+    <div class="modal-header">
+      <span class="modal-title" id="liste-title">Liste complète des dons acceptés</span>
+      <button class="modal-close" onclick="closeModal('modal-liste')" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body" style="padding-bottom:32px">
+      <div class="liste-modal-intro">
+        ⚡ <strong>Collecte DEEE agréée</strong> — Tous les appareils électriques et électroniques sont acceptés <strong>même en panne</strong> : ils sont démontés, dépollués et recyclés dans des filières agréées.
+      </div>
+      <div class="liste-grid">
+        <div class="liste-col yes">
+          <div class="liste-col-title">✅ Objets acceptés</div>
+          <div class="liste-cat">
+            <div class="liste-cat-head">💻 Informatique & High-Tech</div>
+            <ul>
+              <li>PC, Mac, ordinateurs portables</li>
+              <li>Écrans, imprimantes, disques durs</li>
+              <li>Téléphones, tablettes, GPS</li>
+              <li>Câbles, chargeurs, accessoires</li>
+            </ul>
+          </div>
+          <div class="liste-cat">
+            <div class="liste-cat-head">📺 TV, Hi-Fi & Électroménager</div>
+            <ul>
+              <li>Télévisions, lecteurs DVD</li>
+              <li>Enceintes, chaînes hi-fi</li>
+              <li>Gros électroménager (lave-linge, frigo…)</li>
+              <li>Petit électroménager (cafetière, aspirateur…)</li>
+            </ul>
+          </div>
+          <div class="liste-cat">
+            <div class="liste-cat-head">👗 Mode & Textile</div>
+            <ul>
+              <li>Vêtements femme, homme, enfant</li>
+              <li>Chaussures en bon état</li>
+              <li>Accessoires (sacs, ceintures…)</li>
+            </ul>
+          </div>
+          <div class="liste-cat">
+            <div class="liste-cat-head">📚 Culture & Loisirs</div>
+            <ul>
+              <li>Livres, BD, magazines</li>
+              <li>CD, DVD, vinyles</li>
+              <li>Instruments de musique</li>
+              <li>Matériel créatif (peinture, crayons, feutres…)</li>
+            </ul>
+          </div>
+          <div class="liste-cat">
+            <div class="liste-cat-head">🪑 Mobilier & Déco</div>
+            <ul>
+              <li>Petits meubles</li>
+              <li>Luminaires, vases, bibelots, tableaux</li>
+            </ul>
+          </div>
+          <div class="liste-cat">
+            <div class="liste-cat-head">🍳 Cuisine & Arts de la table</div>
+            <ul>
+              <li>Vaisselle (bon état ou abîmée)</li>
+              <li>Casseroles, poêles, cocottes, couverts</li>
+              <li>Ustensiles de cuisine</li>
+            </ul>
+          </div>
+          <div class="liste-cat">
+            <div class="liste-cat-head">🧸 Enfance & Animalerie</div>
+            <ul>
+              <li>Jouets en bon état</li>
+              <li>Matériel de puériculture</li>
+              <li>Accessoires & alimentation animaux non périmée</li>
+            </ul>
+          </div>
+          <div class="liste-cat">
+            <div class="liste-cat-head">🔧 Outillage & Métaux</div>
+            <ul>
+              <li>Outillage divers (manuel ou électrique)</li>
+              <li>Ferrailles et métaux récupérables</li>
+              <li>Câblages divers</li>
+            </ul>
+          </div>
+        </div>
+        <div class="liste-col no">
+          <div class="liste-col-title">❌ Objets refusés</div>
+          <div class="liste-cat">
+            <div class="liste-cat-head">🛏️ Literie</div>
+            <ul>
+              <li>Matelas et sommiers</li>
+              <li>Oreillers, couettes usagés</li>
+            </ul>
+          </div>
+          <div class="liste-cat">
+            <div class="liste-cat-head">⚠️ Produits dangereux</div>
+            <ul>
+              <li>Produits chimiques</li>
+              <li>Peintures et solvants</li>
+              <li>Médicaments périmés ou non</li>
+            </ul>
+          </div>
+          <div class="liste-cat">
+            <div class="liste-cat-head">🚫 Divers</div>
+            <ul>
+              <li>Objets souillés ou infestés</li>
+              <li>Sous-vêtements usagés</li>
+              <li>Alimentation humaine</li>
+              <li>Véhicules motorisés</li>
+            </ul>
+          </div>
+          <div class="liste-contact-box">
+            <p>💡 <strong>Un doute ?</strong><br/>Contactez-nous avant de vous déplacer, nous confirmons si votre objet est accepté.</p>
+            <button class="btn-primary" style="padding:11px 20px;font-size:13px;width:100%" onclick="closeModal('modal-liste');openModal('modal-contact')">Nous contacter →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ═══ MODAL : DEVIS ═══ -->
 <div class="modal-backdrop" id="modal-devis" onclick="handleBackdropClick(event,'modal-devis')">
