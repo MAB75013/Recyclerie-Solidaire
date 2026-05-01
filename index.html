@@ -1020,7 +1020,7 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
 <div class="form-group">
   <label class="form-label">Photos des objets <span style="font-weight:300;text-transform:none;letter-spacing:0">(facultatif)</span></label>
   <div class="photo-upload-zone" id="don-drop-zone">
-    <input type="file" id="don-photos" accept="image/jpeg,image/png,image/webp" multiple/>
+     <input type="file" id="don-photos" name="photos" accept="image/jpeg,image/png,image/webp" multiple/>
     <div class="photo-upload-label">
       📷 <strong>Cliquez ou glissez vos photos ici</strong><br/>
       Aidez notre équipe à préparer la collecte · max 3 photos · JPG / PNG / WEBP
@@ -1031,7 +1031,7 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
 </div>
 
         <div class="recaptcha-wrap" id="rc-don"></div>
-        <button class="form-submit" onclick="submitForm('modal-don','don-form','don-success','rc-don',this)">Planifier mon don →</button>
+        <button class="form-submit" onclick="submitDonForm(this)">Planifier mon don →</button>
         <p class="form-note">Don définitif — voir nos conditions de don.</p>
       </div>
       <div class="form-success" id="don-success">
@@ -1225,7 +1225,76 @@ function showFormError(formId, message) {
   errEl.style.display = 'block';
   setTimeout(() => { errEl.style.display = 'none'; }, 5000);
 }
+/* ── FORM SUBMIT DON → FORMSPREE + PHOTOS ── */
+const FORMSPREE_DON_URL = 'https://formspree.io/f/xnjwqekv'; // ← ton nouvel ID ici
 
+async function submitDonForm(btn) {
+  const formEl    = document.getElementById('don-form');
+  const rcWrap    = document.getElementById('rc-don');
+  const successEl = document.getElementById('don-success');
+  const widgetId  = rcWidgets['rc-don'];
+
+  const rcToken = (typeof grecaptcha !== 'undefined' && widgetId !== undefined)
+    ? grecaptcha.getResponse(widgetId) : '';
+  if (!rcToken) {
+    rcWrap.style.outline = '2px solid #e05252';
+    rcWrap.style.borderRadius = '6px';
+    setTimeout(() => { rcWrap.style.outline = ''; }, 2800);
+    return;
+  }
+
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours…';
+  btn.style.opacity = '0.75';
+
+  const data = new FormData();
+  formEl.querySelectorAll('[name]').forEach(el => {
+    if (el.type === 'file') {
+      Array.from(el.files).forEach(f => data.append('photos', f));
+    } else if (el.name) {
+      data.append(el.name, el.value);
+    }
+  });
+  data.append('g-recaptcha-response', rcToken);
+
+  try {
+    const res = await fetch(FORMSPREE_DON_URL, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: data
+    });
+
+    if (res.ok) {
+      formEl.style.display = 'none';
+      successEl.style.display = 'flex';
+      if (typeof grecaptcha !== 'undefined') grecaptcha.reset(widgetId);
+      setTimeout(() => {
+        closeModal('modal-don');
+        setTimeout(() => {
+          formEl.style.display = '';
+          successEl.style.display = 'none';
+          formEl.querySelectorAll('input:not([type=hidden]), textarea').forEach(el => el.value = '');
+          formEl.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+          btn.disabled = false;
+          btn.textContent = originalText;
+          btn.style.opacity = '';
+        }, 600);
+      }, 3500);
+    } else {
+      btn.disabled = false;
+      btn.textContent = originalText;
+      btn.style.opacity = '';
+      showFormError('don-form', 'Une erreur est survenue. Veuillez réessayer.');
+      if (typeof grecaptcha !== 'undefined') grecaptcha.reset(widgetId);
+    }
+  } catch(err) {
+    btn.disabled = false;
+    btn.textContent = originalText;
+    btn.style.opacity = '';
+    showFormError('don-form', 'Impossible d\'envoyer. Vérifiez votre connexion.');
+  }
+}
 /* \u2500\u2500 REVEAL ON SCROLL \u2500\u2500 */
 const reveals = document.querySelectorAll('.reveal');
 const revObs = new IntersectionObserver((entries) => {
