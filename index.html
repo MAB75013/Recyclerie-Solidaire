@@ -1247,15 +1247,18 @@ async function submitDonForm(btn) {
   btn.textContent = 'Envoi en cours…';
   btn.style.opacity = '0.75';
 
-  const data = new FormData();
-  formEl.querySelectorAll('[name]').forEach(el => {
-    if (el.type === 'file') {
-      Array.from(el.files).forEach(f => data.append('photos', f));
-    } else if (el.name) {
+const data = new FormData();
+// Champs texte
+formEl.querySelectorAll('[name]').forEach(el => {
+    if (el.type !== 'file' && el.name) {
       data.append(el.name, el.value);
     }
-  });
-  data.append('g-recaptcha-response', rcToken || '');
+});
+// Photos depuis le tableau JS (input.value est vidé après sélection)
+const donPhotos = window.getDonPhotos ? window.getDonPhotos() : [];
+donPhotos.forEach(f => data.append('photos', f));
+  
+if (rcToken) data.append('g-recaptcha-response', rcToken);
 
   try {
     const res = await fetch(FORMSPREE_DON_URL, {
