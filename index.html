@@ -1255,7 +1255,7 @@ async function submitDonForm(btn) {
       data.append(el.name, el.value);
     }
   });
-  data.append('g-recaptcha-response', rcToken);
+  data.append('g-recaptcha-response', rcToken || '');
 
   try {
     const res = await fetch(FORMSPREE_DON_URL, {
