@@ -8,6 +8,51 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+/* ── UPLOAD PHOTOS (formulaire don) ── */
+.photo-upload-zone {
+  border: 2px dashed var(--green-pale);
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  background: var(--cream);
+  position: relative;
+}
+.photo-upload-zone:hover, .photo-upload-zone.drag-over {
+  border-color: var(--green-light);
+  background: rgba(74,140,101,.06);
+}
+.photo-upload-zone input[type="file"] {
+  position: absolute; inset: 0; opacity: 0;
+  cursor: pointer; width: 100%; height: 100%;
+}
+.photo-upload-label {
+  font-size: 13px; color: var(--text-light);
+  font-weight: 300; pointer-events: none;
+}
+.photo-upload-label strong { color: var(--green-dark); font-weight: 500; }
+.photo-previews {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px;
+}
+.photo-preview-item {
+  position: relative; width: 80px; height: 80px;
+  border-radius: 10px; overflow: hidden;
+  box-shadow: 0 2px 10px rgba(30,58,47,.12);
+}
+.photo-preview-item img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.photo-preview-remove {
+  position: absolute; top: 3px; right: 3px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(30,58,47,.75); color: #fff;
+  border: none; cursor: pointer; font-size: 11px;
+  display: flex; align-items: center; justify-content: center;
+}
+.photo-count-note {
+  font-size: 11px; color: var(--text-light); margin-top: 8px; font-weight: 300;
+}
 <style>
 /* ── RESET & VARS ── */
 :root{
@@ -970,6 +1015,20 @@ footer{background:var(--green-dark);color:rgba(255,255,255,.7);padding:56px 72px
           <select class="form-select" name="type_objets"><option>Meubles</option><option>Électroménager</option><option>Vêtements</option><option>Livres & Médias</option><option>Jouets & Jeux</option><option>Divers / Mixte</option></select>
         </div>
         <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" name="description" placeholder="Décrivez les objets à donner (état, quantité estimée...)"></textarea></div>
+        <!-- IMPORT PHOTOS DON -->
+<div class="form-group">
+  <label class="form-label">Photos des objets <span style="font-weight:300;text-transform:none;letter-spacing:0">(facultatif)</span></label>
+  <div class="photo-upload-zone" id="don-drop-zone">
+    <input type="file" id="don-photos" accept="image/jpeg,image/png,image/webp" multiple/>
+    <div class="photo-upload-label">
+      📷 <strong>Cliquez ou glissez vos photos ici</strong><br/>
+      Aidez notre équipe à préparer la collecte · max 3 photos · JPG / PNG / WEBP
+    </div>
+  </div>
+  <div class="photo-previews" id="don-previews"></div>
+  <div class="photo-count-note" id="don-photo-note"></div>
+</div>
+
         <div class="recaptcha-wrap" id="rc-don"></div>
         <button class="form-submit" onclick="submitForm('modal-don','don-form','don-success','rc-don',this)">Planifier mon don →</button>
         <p class="form-note">Don définitif — voir nos conditions de don.</p>
@@ -1185,6 +1244,64 @@ function showTab(id, btn) {
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
 }
+</script>
+<script>
+/* ── Photo upload – formulaire don ── */
+(function(){
+  const input    = document.getElementById('don-photos');
+  const dropZone = document.getElementById('don-drop-zone');
+  const previews = document.getElementById('don-previews');
+  const note     = document.getElementById('don-photo-note');
+  const MAX      = 3;
+  let files      = [];
+
+  function renderPreviews() {
+    previews.innerHTML = '';
+    note.textContent = files.length
+      ? files.length + ' photo' + (files.length > 1 ? 's' : '') + ' sélectionnée' + (files.length > 1 ? 's' : '')
+      : '';
+    files.forEach(function(f, i) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var item = document.createElement('div');
+        item.className = 'photo-preview-item';
+        item.innerHTML = '<img src="' + e.target.result + '" alt="photo"/>'
+          + '<button class="photo-preview-remove" type="button" data-i="' + i + '">✕</button>';
+        item.querySelector('button').addEventListener('click', function() {
+          files.splice(i, 1);
+          renderPreviews();
+        });
+        previews.appendChild(item);
+      };
+      reader.readAsDataURL(f);
+    });
+  }
+
+  function addFiles(newFiles) {
+    var merged = files.concat(Array.from(newFiles)).slice(0, MAX);
+    files = merged;
+    renderPreviews();
+    input.value = '';
+  }
+
+  if(input) input.addEventListener('change', function(){ addFiles(input.files); });
+
+  if(dropZone){
+    dropZone.addEventListener('dragover', function(e){
+      e.preventDefault(); dropZone.classList.add('drag-over');
+    });
+    dropZone.addEventListener('dragleave', function(){
+      dropZone.classList.remove('drag-over');
+    });
+    dropZone.addEventListener('drop', function(e){
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      addFiles(e.dataTransfer.files);
+    });
+  }
+
+  window.getDonPhotos = function(){ return files; };
+})();
 </script>
 </body>
 </html>
